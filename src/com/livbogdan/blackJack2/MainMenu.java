@@ -16,13 +16,13 @@ public class MainMenu
         //It returns false if it's time to break, but otherwise runs some code.
         do
         {
-            printMenu();
+            PrintMenu();
 
-        } while (runProgram(getInput(scanner, acceptedAnswers)));
+        } while (RunProgram(GetInput(scanner, acceptedAnswers)));
         scanner.close();
     }
 
-    public static void printMenu()
+    public static void PrintMenu()
     {
         System.out.println("Enter the number to launch the corresponding option. \n");
         System.out.println("1. Play Blackjack");
@@ -31,18 +31,21 @@ public class MainMenu
         System.out.println("4. Exit");
     }
 
-    public static int getInput(Scanner scanner, int[] acceptedAnswers){
+    public static int GetInput(Scanner scanner, int[] acceptedAnswers){
         boolean validInput = false;
         int input = 4;            //Default to exit
 
-        while(!validInput){
+        while(!validInput)
+        {
             input = scanner.nextInt();
             scanner.nextLine();      //Clear the newline character
 
-            for(int i = 0; i < acceptedAnswers.length; i++){
-                if(input == acceptedAnswers[i]){
+            for(int i = 0; i < acceptedAnswers.length; i++)
+            {
+                if(input == acceptedAnswers[i])
+                {
                     validInput = true;
-                    return input;        //Don't say the input is invalid.
+                    return input;   //Don't say the input is invalid.
                 }
             }
 
@@ -62,16 +65,17 @@ public class MainMenu
     /// Exit game when player press button 4
     ///<summary/>>
 
-    public static boolean runProgram(int input)
+    public static boolean RunProgram(int input)
     {
         if(input == 4)
         {
             return false;
         }
-        else{
+        else
+        {
 
             if(input == 1)
-                SinglePlayer.runGame();
+                SinglePlayer.RunGame();
             else if(input == 2)
                 HowToPlay.main(null);
             else

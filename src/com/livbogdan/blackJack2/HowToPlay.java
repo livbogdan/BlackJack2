@@ -1,5 +1,7 @@
 package com.livbogdan.blackJack2;
 
+import static java.lang.System.out;
+
 public class HowToPlay
 {
     public static void main (String[] args)
@@ -22,12 +24,12 @@ public class HowToPlay
         println("After each player has had his turn, the dealer will turn over his hole card. If the dealer has 16 or less, then he will draw another card. If he has an ace and another set of cards totaling 6 points, it is said that he has a \"Soft 17\". In this casino, the dealer is forced to hit on a soft 17.");
         println("If the dealer goes over 21 points, then any player who didn't already bust will win.");
         println("If the dealer does not bust, then the higher point total between the player and dealer will win.");
-        println("Winning wagers pay even money.");
+        println("Winning bets pay even money.");
     }
 
     //Makes it easier to type it all out.
     public static void println(String string)
     {
-        System.out.println(string);
+        out.println(string);
     }
 }

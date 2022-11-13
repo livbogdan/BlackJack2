@@ -14,7 +14,7 @@ public class Hand
         this.hand = cards;
     }
 
-    public static int getPoints(Hand inputtedHand)
+    public static int GetPoints(Hand inputtedHand)
     {
         int points = 0; // How much points player has
         boolean hasAnAce = false; // Has player ace or not
@@ -35,7 +35,7 @@ public class Hand
         }
         if (hasAnAce) // If player has Ace
         {
-            Hand tempHand = copyHandWithoutAces(copyHand(inputtedHand));
+            Hand tempHand = CopyHandWithoutAces(CopyHand(inputtedHand));
             if (tempHand.hand.size() == 0)
             {
                 //inputtedHand.hand.stream().forEach(System.out::println);
@@ -57,11 +57,11 @@ public class Hand
         return points;
     }
 
-    public static Hand copyHand(Hand inputtedHand)
+    public static Hand CopyHand(Hand inputtedHand)
     {
         ArrayList<Card> tempList = new ArrayList<>();
         for (int i = 0; i < inputtedHand.hand.size(); i++) {
-            tempList.add(Card.copyCard(inputtedHand.hand.get(i)));
+            tempList.add(Card.CopyCard(inputtedHand.hand.get(i)));
         }
 
         Hand tempHand = new Hand(tempList);
@@ -70,11 +70,11 @@ public class Hand
     }
 
     // If player/dealer dont have Ace Card
-    public static Hand copyHandWithoutAces(Hand inputtedHand)
+    public static Hand CopyHandWithoutAces(Hand inputtedHand)
     {
         ArrayList<Card> tempList = new ArrayList<>();
         for (int i = 0; i < inputtedHand.hand.size(); i++) {
-            tempList.add(Card.copyCard(inputtedHand.hand.get(i)));
+            tempList.add(Card.CopyCard(inputtedHand.hand.get(i)));
         }
 
         List<Card> removeList = new ArrayList<Card>();
@@ -94,7 +94,7 @@ public class Hand
     }
 
     // Get Amount of points
-    public static String printFullHand(Hand inputtedHand)
+    public static String PrintFullHand(Hand inputtedHand)
     {
         String result = "";
         for (Card card : inputtedHand.hand) {
@@ -107,10 +107,9 @@ public class Hand
     }
 
     //Take back all player cards when round/game end
-    public static Hand clearHand(Hand inputtedHand) // Method gonna be active when Dealer open cards
+    public static void ClearHand(Hand inputtedHand) // Method gonna be active when Dealer open cards
     {
         inputtedHand.hand.clear();
 
-        return inputtedHand;
     }
 }

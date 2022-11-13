@@ -11,13 +11,13 @@ public class SinglePlayer
     public static double money;
     public static double bet;
     public static double insuranceBet;
-    public static void runGame()
+    public static void RunGame()
     {
         Scanner reader = new Scanner(System.in);
 
-        String name = GameManager.getName(reader);
+        String name = GameManager.GetName(reader);
 
-        money = GameManager.getMoney(reader);
+        money = GameManager.GetMoney(reader);
 
         if (money == -1)
         {
@@ -41,21 +41,21 @@ public class SinglePlayer
                 System.exit(10); //10 = Bad money
             }
 
-            Dealer.resetDeck(Dealer.deck);
-            Dealer.initDeck(Dealer.deck);
-            Dealer.shuffleDeck(Dealer.deck);
+            Dealer.ResetDeck(Dealer.deck);
+            Dealer.InitDeck(Dealer.deck);
+            Dealer.ShuffleDeck(Dealer.deck);
 
             boolean blackjack = false;
             boolean bust = false;
             boolean playStillGoing = true;
 
-            Hand playerHand = new Hand(new ArrayList<Card>(Dealer.dealStartingCards(Dealer.deck)));
-            Dealer.hand =  new Hand(new ArrayList<Card>(Dealer.dealStartingCards(Dealer.deck)));
+            Hand playerHand = new Hand(new ArrayList<>(Dealer.DealStartingCards(Dealer.deck)));
+            Dealer.hand =  new Hand(new ArrayList<>(Dealer.DealStartingCards(Dealer.deck)));
 
 
             while(true)
             {
-                bet = GameManager.getBet(reader, 1.00);
+                bet = GameManager.GetBet(reader, 1.00);
                 if(bet <= money)
                 {
                     break;
@@ -91,7 +91,7 @@ public class SinglePlayer
             {
                 while(true)
                 {
-                    insuranceBet = GameManager.getInsuranceWager(reader, 1.00);
+                    insuranceBet = GameManager.GetInsuranceBet(reader, 1.00);
                     if(insuranceBet + bet <= money)
                     {
                         break;
@@ -101,7 +101,7 @@ public class SinglePlayer
                 }
             }
 
-            if(GameManager.checkForBlackjack(playerHand))
+            if(GameManager.CheckForBlackjack(playerHand))
             {
                 //Blackjack!
                 out.println("That's a blackjack! The dealer now must reveal his cards");
@@ -113,11 +113,11 @@ public class SinglePlayer
 
             while (playStillGoing)
             {
-                String choice = GameManager.getChoice(reader);
+                String choice = GameManager.GetChoice(reader);
 
                 if (choice.equals("H"))
                 {
-                    Dealer.dealCard(playerHand.hand);
+                    Dealer.DealCard(playerHand.hand);
                     out.println
                             ("You have recieved a " +
                             playerHand.hand.get(playerHand.hand.size() - 1).suit.symbol +
@@ -125,7 +125,7 @@ public class SinglePlayer
                 }
                 else if (choice.equals("D"))
                 {
-                    Dealer.dealCard(playerHand.hand);
+                    Dealer.DealCard(playerHand.hand);
                     bet *= 2;
 
                     out.println("Upping your bid to $" + bet);
@@ -140,6 +140,10 @@ public class SinglePlayer
                 {
                     playStillGoing = false;
                     break;
+                }
+                else if (choice.equals("E"))
+                {
+                 System.exit(0);
                 }
                 else
                 {
@@ -158,13 +162,14 @@ public class SinglePlayer
                 }
 
                 out.println("Your current hand is: " +
-                        Hand.printFullHand(playerHand));
+                        Hand.PrintFullHand(playerHand));
 
                 firstPlay = false;
 
-                bust = GameManager.checkForBust(playerHand);
+                bust = GameManager.CheckForBust(playerHand);
 
-                if(bust){
+                if(bust)
+                {
                     playStillGoing = false;
                 }
 
@@ -172,13 +177,13 @@ public class SinglePlayer
 
             if(!blackjack)
             {
-                Dealer.useTurn(Dealer.hand);
+                Dealer.UseTurn(Dealer.hand);
             }
             else{
-                Dealer.revealHand();
+                Dealer.RevealHand();
             }
 
-            getWinner(playerHand,
+            GetWinner(playerHand,
                     Dealer.hand,
                     blackjack,
                     bust);
@@ -188,8 +193,8 @@ public class SinglePlayer
                     " left.");
 
             /*****RESET******/
-            Hand.clearHand(playerHand);
-            Hand.clearHand(Dealer.hand);
+            Hand.ClearHand(playerHand);
+            Hand.ClearHand(Dealer.hand);
             insuranceBet = 0;
             bet = 0;
 
@@ -205,7 +210,7 @@ public class SinglePlayer
 
             while(true)
             {
-                out.println("Would you like to play another hand? Y/N"); // Make you desition would you contine play or not
+                out.println("Would you like to play another hand? (Y)es/(N)o or (E)xit"); // Make you desition would you contine play or not
                 String answer = reader.nextLine().toUpperCase();
                 if (answer.equals("Y") || answer.equals("N"))
                 {
@@ -218,7 +223,12 @@ public class SinglePlayer
                     {
                         playing = false;
                         break;
+
                     }
+                }
+                else if (answer.equals("E"))
+                {
+                  System.exit(0);
                 }
 
                 out.println("I'm sorry, but '" + answer + "' is not a valid input."); // If player type small y/n or different charter upcoming this message.
@@ -226,7 +236,7 @@ public class SinglePlayer
         }
     }
 
-    public static void getWinner(Hand playerHand,
+    public static void GetWinner(Hand playerHand,
                                  Hand dealerHand,
                                  boolean playerBlackjack,
                                  boolean playerBust)
@@ -236,7 +246,7 @@ public class SinglePlayer
             //The player goes first, so it checks if the player busted first.
             out.println("You busted! You lose your bet of $" + bet + ".");
             money -= bet;
-            if(!GameManager.checkForBlackjack(dealerHand))
+            if(!GameManager.CheckForBlackjack(dealerHand))
             {
                 if(insuranceBet != 0.0)
                 {
@@ -256,7 +266,7 @@ public class SinglePlayer
                 }
             }
         }
-        else if(GameManager.checkForBust(dealerHand))
+        else if(GameManager.CheckForBust(dealerHand))
         {
             out.println("The dealer busted! You win your bet of $" + bet + ".");
             money += bet;
@@ -267,9 +277,10 @@ public class SinglePlayer
                 money -= insuranceBet;
             }
         }
-        else{
+        else
+        {
             //Neither busted
-            if(playerBlackjack && GameManager.checkForBlackjack(dealerHand))
+            if(playerBlackjack && GameManager.CheckForBlackjack(dealerHand))
             {
                 //2 blackjacks == tie
                 out.println("It's a push! You don't lose or gain anything!");
@@ -283,18 +294,18 @@ public class SinglePlayer
                     money += insuranceBet;
                 }
             }
-            else if(playerBlackjack)
+            else if(playerBlackjack) //They took insurance 1.5
             {
                 bet *= 1.5;
                 out.println("You got a blackjack! You win 3:2 on your bet, or $" + bet + ".");
                 if(insuranceBet != 0.0)
                 {
-                    //They took insurance
+
                     out.println("The dealer didn't have a blackjack! You lose your $" + insuranceBet + " insurance!");
                     money -= insuranceBet;
                 }
             }
-            else if(GameManager.checkForBlackjack(dealerHand))
+            else if(GameManager.CheckForBlackjack(dealerHand))
             {
                 out.println("The dealer got a blackjack! You lose your $" + bet + " wager.");
                 money -= bet;
@@ -316,11 +327,11 @@ public class SinglePlayer
                     money -= insuranceBet;
                 }
 
-                if(Hand.getPoints(playerHand) == Hand.getPoints(dealerHand))
+                if(Hand.GetPoints(playerHand) == Hand.GetPoints(dealerHand))
                 {
                     out.println("It's a push! You don't lose or gain anything!");
                 }
-                else if(Hand.getPoints(playerHand) > Hand.getPoints(dealerHand))
+                else if(Hand.GetPoints(playerHand) > Hand.GetPoints(dealerHand))
                 {
                     // Add money in your bank
                     out.println("You win! You get $" + bet + ".");
@@ -335,4 +346,6 @@ public class SinglePlayer
             }
         }
     }
+
+
 }

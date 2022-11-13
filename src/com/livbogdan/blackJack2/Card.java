@@ -19,7 +19,7 @@ public class Card
         }
     }
 
-    public static Card copyCard(Card card)
+    public static Card CopyCard(Card card)
     {
         Card copiedCard = new Card();
         copiedCard.suit = card.suit;
@@ -27,7 +27,7 @@ public class Card
         return copiedCard;
     }
 
-    public static Card initCard(int number, Suit newSuit)
+    public static Card InitCard(int number, Suit newSuit)
     {
 
         Card card = new Card();

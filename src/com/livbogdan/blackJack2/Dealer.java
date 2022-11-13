@@ -8,10 +8,10 @@ import java.util.concurrent.TimeUnit;
 public class Dealer
 {
 
-    public static Stack<Card> deck = new Stack<Card>();
+    public static Stack<Card> deck = new Stack<>();
     public static Hand hand;
 
-    public static void shuffleDeck(Stack<Card> gameDeck)
+    public static void ShuffleDeck(Stack<Card> gameDeck)
     {
 
         Random random = new Random();
@@ -22,18 +22,18 @@ public class Dealer
             int indexToChange = random.nextInt(gameDeck.size());
             int indexToChangeTo = random.nextInt(gameDeck.size());
 
-            swap(gameDeck, indexToChange, indexToChangeTo);
+            Swap(gameDeck, indexToChange, indexToChangeTo);
 
         }
 
     }
 
-    public static void initDeck(Stack<Card> gameDeck)
+    public static void InitDeck(Stack<Card> gameDeck)
     {
-        final int NUM_SUITS = 4;
-        final int STARTING_CARD_NUMBER = 2;
-        final int CARDS_PER_SUIT = 14;
-        final int DECKS_USED = 6;
+        final int NUM_SUITS = 4; // amount of suits
+        final int STARTING_CARD_NUMBER = 2; // Amount card in hand
+        final int CARDS_PER_SUIT = 14; // How much cards has one suit
+        final int DECKS_USED = 6; //total used cards in deck
 
         for (int dck = 1; dck <= DECKS_USED; dck++)
         {
@@ -43,7 +43,7 @@ public class Dealer
                      card <= CARDS_PER_SUIT;
                      card++)
                 {
-                    gameDeck.add(Card.initCard(card, Card.Suit.values()[suit]));
+                    gameDeck.add(Card.InitCard(card, Card.Suit.values()[suit]));
                 }
             }
         }
@@ -51,7 +51,7 @@ public class Dealer
 
     }
 
-    public static void swap(Stack<Card> gameDeck,
+    public static void Swap(Stack<Card> gameDeck,
                             int indexToChange,
                             int indexToChangeTo)
     {
@@ -62,38 +62,42 @@ public class Dealer
 
     }
 
-    public static List<Card> dealStartingCards(Stack<Card> gameDeck) {
+    public static List<Card> DealStartingCards(Stack<Card> gameDeck)
+    {
         Card cardOne = gameDeck.pop();
         Card cardTwo = gameDeck.pop();
 
         return Arrays.asList(cardOne, cardTwo);
     }
 
-    public static void dealCard(List<Card> hand)
+    public static void DealCard(List<Card> hand)
     {
         hand.add(deck.pop());
     }
 
-    public static void resetDeck(Stack<Card> gameDeck)
+    public static void ResetDeck(Stack<Card> gameDeck)
     {
         gameDeck.removeAllElements();
     }
 
-    public static void revealHand() {
+    public static void RevealHand()
+    {
         System.out.println("\n\nFlipping over the card in the hole...");
 
         //Wait
         try {
             TimeUnit.SECONDS.sleep(1);
-        } catch (InterruptedException ie) {
-
+        }
+        catch (InterruptedException ie)
+        {
+            throw new RuntimeException(ie);
         }
 
         System.out.println("\n\nThe dealer's 2 cards are: " +
-                Hand.printFullHand(Dealer.hand));
+                Hand.PrintFullHand(Dealer.hand)); // Dealer show all cards in hands
     }
 
-    public static void useTurn(Hand myHand)
+    public static void UseTurn(Hand myHand)
     {
 
         boolean stillGoing = true;
@@ -101,25 +105,28 @@ public class Dealer
         System.out.println("\n\nYour turn is over. It is now the dealer's turn.\n\nFlipping over the card in the hole...");
 
         //Wait
-        try {
+        try
+        {
             TimeUnit.SECONDS.sleep(1);
-        } catch (InterruptedException ie) {
-
+        }
+        catch (InterruptedException ie)
+        {
+            throw new RuntimeException(ie);
         }
 
-        System.out.println("\n\nThe dealer's 2 cards are: " + Hand.printFullHand(Dealer.hand));
+        System.out.println("\n\nThe dealer's 2 cards are: " + Hand.PrintFullHand(Dealer.hand));
 
         while (stillGoing)
         {
 
-            if (GameManager.checkForBust(myHand))
+            if (GameManager.CheckForBust(myHand))
             {
                 stillGoing = false;
             }
-            else if (Hand.getPoints(myHand) < 16)
+            else if (Hand.GetPoints(myHand) < 16)
             {
                 System.out.println("The dealer has less than 16 points, and is hitting...");
-                dealCard(myHand.hand);
+                DealCard(myHand.hand);
                 //Wait
                 try {
                     TimeUnit.SECONDS.sleep(2);
@@ -132,11 +139,11 @@ public class Dealer
                         myHand.hand.get(myHand.hand.size() - 1).suit.symbol +
                         myHand.hand.get(myHand.hand.size() - 1).name);
             }
-            else if (GameManager.softNumber(myHand, 17))
+            else if (GameManager.SoftNumber(myHand, 17))
             {
                 //It's a soft 17
                 System.out.println("It's a soft 17. The dealer is hitting...");
-                dealCard(myHand.hand);
+                DealCard(myHand.hand);
                 //Wait
                 try
                 {
@@ -159,7 +166,7 @@ public class Dealer
         }
 
         System.out.println("\n\nThe dealer's final cards are: " +
-                Hand.printFullHand(Dealer.hand) + "\n");
+                Hand.PrintFullHand(Dealer.hand) + "\n");
 
         //Wait
         try
